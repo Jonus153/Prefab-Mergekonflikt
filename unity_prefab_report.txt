@@ -1,3 +1,6 @@
+Edit → Project Settings → Editor
+Asset Serialization → Force Text
+
 Unity Prefabs und Git Merge-Probleme – Kurzbericht
 
 Worum geht es? Unity-Prefabs (.prefab) sind serialisierte Assets. Obwohl
