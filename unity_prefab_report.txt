@@ -1,0 +1,53 @@
+Unity Prefabs und Git Merge-Probleme – Kurzbericht
+
+Worum geht es? Unity-Prefabs (.prefab) sind serialisierte Assets. Obwohl
+sie als Textdateien gespeichert werden, enthalten sie viele
+interne Referenzen, IDs und automatisch generierte Werte. Bereits kleine
+Änderungen können große strukturelle Unterschiede erzeugen.
+
+Warum entstehen Merge-Konflikte? Git arbeitet zeilenbasiert. Prefabs
+sind jedoch stark strukturierte Daten. Wenn mehrere Branches denselben
+Prefab ändern, kann Git Änderungen oft nicht sinnvoll zusammenführen.
+Typische Ursachen:
+
+-   Geänderte Objekt-IDs und Referenzen
+-   Verschobene Reihenfolgen im YAML
+-   Automatisch generierte Änderungen durch Unity
+-   Parallele Bearbeitung desselben Prefabs
+
+Praktische Lösung bei Konflikten Prefabs sollten nicht manuell gemerged
+werden. In der Regel wird eine Version vollständig übernommen.
+
+Eigene Version behalten: git checkout –ours Assets/Pfad/Datei.prefab git
+add Assets/Pfad/Datei.prefab git commit
+
+Version aus anderem Branch übernehmen: git checkout –theirs
+Assets/Pfad/Datei.prefab git add Assets/Pfad/Datei.prefab git commit
+
+Wie kann man Probleme vermeiden?
+
+1.  Unity richtig konfigurieren (sehr wichtig) Edit → Project Settings →
+    Editor
+
+-   Asset Serialization → Force Text
+-   Version Control → Visible Meta Files
+
+2.  Unity Smart Merge verwenden (empfohlen) Unity bietet UnityYAMLMerge
+    zur besseren Konfliktbehandlung.
+
+Beispiel .gitattributes: .prefab merge=unityyamlmerge .unity
+merge=unityyamlmerge
+
+3.  Team-Regeln etablieren (entscheidend)
+
+-   Nicht denselben Prefab parallel bearbeiten
+-   Große Prefabs aufteilen
+-   Änderungen klein und isoliert committen
+-   Verantwortlichkeiten klar verteilen
+
+4.  Temporäre Dateien ignorieren (.gitignore) Library/ Temp/ Build/
+    Logs/ UserSettings/
+
+Wichtige Realität Auch bei Text-Serialisierung bleiben Prefabs
+konfliktanfällig. Bei Merge-Problemen ist das Übernehmen einer Version
+meist die stabilste Lösung.
